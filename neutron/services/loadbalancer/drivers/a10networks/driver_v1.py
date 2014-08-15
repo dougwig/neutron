@@ -115,6 +115,9 @@ class ThunderDriver(abstract_driver.LoadBalancerAbstractDriver):
         return context.session.query(lb_db.Pool).filter_by(
             tenant_id=tenant_id).count()
 
+    def _vip_get(self, context, vip_id):
+        return self.plugin.get_vip(context, vip_id)
+
     def _active(self, context, model_type, model_id):
         self.plugin.update_status(context,
                                   self.neutron_map[model_type]['model'],
