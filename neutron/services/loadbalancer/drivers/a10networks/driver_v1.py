@@ -18,7 +18,7 @@ from neutron.openstack.common import log as logging
 from neutron.plugins.common import constants
 from neutron.services.loadbalancer.drivers import abstract_driver
 
-VERSION = "0.4.0"
+VERSION = "0.4.1"
 LOG = logging.getLogger(__name__)
 
 
@@ -78,6 +78,9 @@ class ThunderDriver(abstract_driver.LoadBalancerAbstractDriver):
         return context.session.query(lb_db.Member).filter_by(
             tenant_id=member['tenant_id'],
             address=member['address']).count()
+
+    def _member_get(self, context, member_id):
+        return self.plugin.get_member(context, member_id)
 
     def _member_get_ip(self, context, member, use_float=False):
         ip_address = member['address']
