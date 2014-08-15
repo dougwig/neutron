@@ -18,7 +18,7 @@ from neutron.openstack.common import log as logging
 from neutron.plugins.common import constants
 from neutron.services.loadbalancer.drivers import abstract_driver
 
-VERSION = "0.4.1"
+VERSION = "0.4.2"
 LOG = logging.getLogger(__name__)
 
 
@@ -54,11 +54,9 @@ class ThunderDriver(abstract_driver.LoadBalancerAbstractDriver):
         try:
             # Attempt import here, so unit tests can replace self.a10
             import a10_neutron_lbaas
-            import acos_client
 
-            LOG.debug("A10Driver: initializing, version=%s, lbaas_manager=%s,"
-                      " acos_client=%s", VERSION, a10_neutron_lbaas.VERSION,
-                      acos_client.VERSION)
+            LOG.debug("A10Driver: initializing, version=%s, lbaas_manager=%s",
+                      VERSION, a10_neutron_lbaas.VERSION)
 
             self.a10 = a10_neutron_lbaas.A10OpenstackLBV1(self)
         except ImportError:
