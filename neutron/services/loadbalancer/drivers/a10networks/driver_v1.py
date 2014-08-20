@@ -12,13 +12,14 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+import a10_neutron_lbaas
 from neutron.db import l3_db
 from neutron.db.loadbalancer import loadbalancer_db as lb_db
 from neutron.openstack.common import log as logging
 from neutron.plugins.common import constants
 from neutron.services.loadbalancer.drivers import abstract_driver
 
-VERSION = "0.4.2"
+VERSION = "1.0.0"
 LOG = logging.getLogger(__name__)
 
 
@@ -50,20 +51,13 @@ class ThunderDriver(abstract_driver.LoadBalancerAbstractDriver):
             },
         }
 
-        self.a10 = None
-        try:
-            # Attempt import here, so unit tests can replace self.a10
-            import a10_neutron_lbaas
+        LOG.debug("A10Driver: initializing, version=%s, lbaas_manager=%s",
+                  VERSION, a10_neutron_lbaas.VERSION)
 
-            LOG.debug("A10Driver: initializing, version=%s, lbaas_manager=%s",
-                      VERSION, a10_neutron_lbaas.VERSION)
+        self.a10 = a10_neutron_lbaas.A10OpenstackLBV1(self)
 
-            self.a10 = a10_neutron_lbaas.A10OpenstackLBV1(self)
-        except ImportError:
-            LOG.exception(
-                _("A10Driver: Failed to import a10_neutron_lbaas; "
-                  "please 'pip install a10_neutron_lbaas', verify your "
-                  "config file, and restart neutron."))
+    # The following private helper methods are used by a10_neutron_lbaas,
+    # and reflect the neutron interfaces required by that package.
 
     def _hm_binding_count(self, context, hm_id):
         hm_binding_qty = (context.session.query(
@@ -141,6 +135,8 @@ class ThunderDriver(abstract_driver.LoadBalancerAbstractDriver):
 
     def _hm_db_delete(self, context, hm_id, pool_id):
         self.plugin._delete_db_pool_health_monitor(context, hm_id, pool_id)
+
+    # Pass-through driver
 
     def create_vip(self, context, vip):
         self.a10.vip.create(context, vip)

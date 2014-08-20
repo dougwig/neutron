@@ -13,10 +13,12 @@
 #    under the License.
 
 import mock
+import sys
 
 from neutron import context
 from neutron.db.loadbalancer import loadbalancer_db as lb_db
-from neutron.services.loadbalancer.drivers.a10networks import driver_v1
+with mock.patch.dict(sys.modules, {'a10_neutron_lbaas': mock.Mock()}):
+    from neutron.services.loadbalancer.drivers.a10networks import driver_v1
 from neutron.tests.unit.db.loadbalancer import test_db_loadbalancer
 
 

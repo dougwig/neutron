@@ -3,17 +3,12 @@ A10 Networks LBaaS Driver
 Installation info:
 
 To use this driver, you must:
-- Run 'pip install a10-neutron-lbaas'
+- Install the a10-neutron-lbaas module. (E.g.: 'pip install a10-neutron-lbaas')
 - Create a driver config file, a sample of which is given below.
 - Enable it in neutron.conf
 - Restart neutron-server
 
 Third-party CI info:
-
-Build logs can be found in the gerrit reviews, and are kept for least one
-month.
-
-Tests can be re-run with the comment "recheck a10".
 
 Contact info for any problems is: a10-openstack-ci at a10networks dot com
 Or contact Doug Wiegley directly (IRC: dougwig)
