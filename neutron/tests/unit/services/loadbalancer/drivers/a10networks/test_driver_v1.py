@@ -12,8 +12,9 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import mock
 import sys
+
+import mock
 
 from neutron import context
 from neutron.db.loadbalancer import loadbalancer_db as lb_db
